@@ -1,5 +1,5 @@
 # from django.test import TestCase
-import pandas as pd
+
 
 # Create your tests here.
 taxTable = {
@@ -32,5 +32,5 @@ def calculateTax(income):
     
     return tax, taxableIncome, category
 
-print(calculateTax(34240))
+print(calculateTax(31825))
 

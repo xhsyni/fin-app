@@ -33,7 +33,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
     nationality = models.CharField(max_length=30, db_column='nationality', null=True)
     last_login = models.DateTimeField(null=True, blank=True)
     
-    # Required fields for Django authentication
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -41,14 +40,28 @@ class Users(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']  # Required fields for creating a user
+    REQUIRED_FIELDS = ['name']
 
     class Meta:
         db_table = 'user'
 
     def __str__(self):
         return self.name
-    
+
+class TaxUser(models.Model):
+    taxuserid = models.AutoField(primary_key=True, db_column='taxuserid')
+    userid = models.ForeignKey(Users, on_delete=models.CASCADE)
+    tax_year = models.IntegerField(db_column='tax_year')
+    tax_income = models.DecimalField(max_digits=12, decimal_places=2, db_column='tax_income')
+    deduction = models.DecimalField(max_digits=12, decimal_places=2, db_column='deduction')
+    amount = models.DecimalField(max_digits=12, decimal_places=2, db_column='amount')
+
+    class Meta:
+        db_table = 'tax_user'
+
+    def __str__(self):
+        return self.taxuserid
+
 class Income(models.Model):
     incomeid = models.AutoField(primary_key=True, db_column='incomeid')
     userid = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -58,26 +71,13 @@ class Income(models.Model):
     amount = models.DecimalField(max_digits=20, decimal_places=2, db_column='amount')
     job = models.CharField(max_length=30, db_column='job', blank=True, null=True)
     typeInc = models.CharField(max_length=50, db_column='type', blank=True, null=True)
+    taxuserid = models.ForeignKey(TaxUser, on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = 'income'
 
     def __str__(self):
         return self.incomeid
-
-class TaxUser(models.Model):
-    taxuserid = models.AutoField(primary_key=True, db_column='taxuserid')
-    userid = models.ForeignKey(Users, on_delete=models.CASCADE)
-    tax_year = models.IntegerField(db_column='tax_year')
-    tax_income = models.DecimalField(max_digits=12, decimal_places=2, db_column='tax_income')
-    amount = models.DecimalField(max_digits=12, decimal_places=2, db_column='amount')
-    job = models.CharField(max_length=30, db_column='job', null=True)
-
-    class Meta:
-        db_table = 'tax_user'
-
-    def __str__(self):
-        return self.taxuserid
 
 class Expense(models.Model):
     expenseid = models.AutoField(primary_key=True, db_column='expenseid')
