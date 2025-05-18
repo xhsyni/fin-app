@@ -23,7 +23,8 @@ function ManageTax({ isActive, setActive }) {
         if (typeof setActive === 'function') {
             setActive(false);
         }
-        navigate(-1);
+        navigate(-1)
+            .then(dispatch(viewAllTax));
     }
 
     const handleAddYear = () => {
