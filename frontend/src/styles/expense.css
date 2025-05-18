@@ -1,0 +1,80 @@
+.file-drop-zone {
+    border: 2px dashed #CBD5E1;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    background-color: #F8FAFC;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-drop-zone.dragging {
+    border-color: #3B82F6;
+    background-color: #EFF6FF;
+}
+
+.file-drop-zone input[type="file"] {
+    display: none;
+}
+
+.file-drop-zone svg {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    fill: #1a6ff8;
+}
+
+.file-drop-zone p {
+    margin: 0;
+    color: #64748B;
+    font-size: 0.875rem;
+}
+
+.file-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-list .submitButton {
+    margin-top: 1rem;
+    margin-left: auto;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-spinner img {
+    margin-top: 1rem;
+    margin-left: auto;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #F3F4F6;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+.file-item span {
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.remove-file {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}

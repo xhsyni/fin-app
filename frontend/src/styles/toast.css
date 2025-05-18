@@ -1,0 +1,38 @@
+.success-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #d3fdd4;
+    color: rgb(1, 90, 0);
+    padding: 16px 24px;
+    font-weight: 700;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out forwards;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.success-toast-icon {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.success-toast-message {
+    font-size: 16px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
