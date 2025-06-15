@@ -102,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # MySQL backend
         'NAME': 'finance',           # Name of your database
         'USER': 'root',                 # Your MySQL username
-        'PASSWORD': 'Ac-6143052',             # Your MySQL password
+        'PASSWORD': 'abcd',             # Your MySQL password
         'HOST': 'localhost',                     # Set to empty string for localhost
         'PORT': '3306',                          # Default MySQL port
     }
