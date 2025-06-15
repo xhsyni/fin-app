@@ -17,6 +17,7 @@ function TaxFiling() {
     const { taxs } = useSelector((state) => state.tax)
     const [year, setYear] = useState(() => {
         const taxYears = Object.keys(taxs?.totalTax || {});
+        console.log(taxYears)
         return taxYears.length > 0
             ? taxYears[taxYears.length - 1]
             : new Date().getFullYear().toString();
@@ -146,10 +147,13 @@ function TaxFiling() {
                 </div>
                 <div className="card-container">
                     <div className="analytic-card">
-                        <h3>Effective Tax Rate ({year})</h3>
+                        <h3>Effective Tax Rate ({taxs?.totalTax?.[year] ? year : "N/A"})</h3>
                         <h2 className="amount">
-                            {((taxs?.totalTax[year]?.income_tax || 0) / (taxs?.totalTax[year]?.taxable_income || 0) * 100).toFixed(1)
-                                || "0.0"}%
+                            {
+                                taxs?.totalTax?.[year]?.taxable_income
+                                    ? ((taxs.totalTax[year].income_tax || 0) / taxs.totalTax[year].taxable_income * 100).toFixed(1)
+                                    : "0.0"
+                            }%
                         </h2>
                         <p>This rate shows the average percentage of income paid in taxes for the year {year}.</p>
                         <p>A lower rate may indicate effective tax planning or available deductions.</p>
@@ -159,26 +163,28 @@ function TaxFiling() {
                         <h2 className="amount">
                             RM {taxs?.totalTax && taxs.totalTax[year] ? (() => {
                                 const years = Object.keys(taxs.totalTax);
-                                const totalTax = years.reduce((sum, yr) => sum + (taxs.totalTax[yr].income_tax || 0), 0);
+                                const totalTax = years.reduce((sum, yr) => sum + (taxs.totalTax[yr]?.income_tax || 0), 0);
                                 return (totalTax / years.length).toFixed(2);
                             })() : "0.00"}
                         </h2>
-                        {taxs?.totalTax && Object.keys(taxs.totalTax).length > 1 && (
-                            <p>
-                                {`Change from previous year: ${(
-                                    ((taxs.totalTax[year].income_tax - taxs.totalTax[Object.keys(taxs.totalTax)[1]].income_tax) /
-                                        taxs.totalTax[Object.keys(taxs.totalTax)[1]].income_tax) * 100
-                                ).toFixed(2)}%`}
-                            </p>
-                        )}
+                        {taxs?.totalTax && Object.keys(taxs.totalTax).length > 1 && taxs.totalTax[year] && (() => {
+                            const years = Object.keys(taxs.totalTax);
+                            const currentYearTax = taxs.totalTax[year]?.income_tax || 0;
+                            const previousYear = years.find(yr => yr !== year);
+                            const previousYearTax = taxs.totalTax[previousYear]?.income_tax || 0;
+                            const change = previousYearTax ? ((currentYearTax - previousYearTax) / previousYearTax * 100).toFixed(2) : "0.00";
+                            return <p>{`Change from previous year: ${change}%`}</p>;
+                        })()}
+
                     </div>
                     <div className="analytic-card">
                         <h3>Deduction to Tax Ratio ({year})</h3>
                         <h2 className="amount">
-                            {taxs?.totalTax && taxs.totalTax[year]
-                                ? (taxs.totalTax[year]?.deduction / taxs.totalTax[year]?.income_tax || 0).toFixed(2)
+                            {taxs?.totalTax?.[year]
+                                ? ((taxs.totalTax[year].deduction || 0) / (taxs.totalTax[year].income_tax || 1)).toFixed(2)
                                 : "0.00"}
                         </h2>
+
                         <p>A higher ratio would indicate deductions are having a greater impact on reducing taxes relative to your total liability.</p>
                     </div>
                 </div>
